@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2024 at 12:39 PM
+-- Generation Time: Sep 24, 2024 at 05:42 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,27 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `bakery`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admins`
---
-
-CREATE TABLE `admins` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `admins`
---
-
-INSERT INTO `admins` (`id`, `name`, `email`, `password`, `created_at`) VALUES
-(4, 'Admin User', 'admin@bakeeasebakery.com', '$2y$10$abcdefghijklmnopqrstuv', '2024-09-20 18:52:13');
 
 -- --------------------------------------------------------
 
@@ -72,7 +51,15 @@ CREATE TABLE `contact_messages` (
 --
 
 INSERT INTO `contact_messages` (`id`, `name`, `email`, `message`) VALUES
-(1, 'Jane Smith', 'jane@example.com', 'I love your cakes!');
+(1, 'Jane Smith', 'jane@example.com', 'I love your cakes!'),
+(2, 'brian', 'brian@gmail.com', 'yawa'),
+(3, 'brian', 'brian@gmail.com', 'yawa'),
+(4, 'brian', 'brian@gmail.com', 'yawa'),
+(5, 'brian', 'brian@gmail.com', 'yawa'),
+(6, 'brian', 'brian@gmail.com', 'yawa'),
+(7, 'brian', 'brian@gmail.com', 'yawa'),
+(8, 'brian', 'brian@gmail.com', 'yawa'),
+(9, 'brian', 'brian@gmail.com', 'yawa');
 
 -- --------------------------------------------------------
 
@@ -96,14 +83,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `product_id`, `quantity`, `total_price`, `payment_method`, `address`, `status`) VALUES
-(1, 5, 1, 5, 129.95, 'online', 'yawards', 'pending'),
-(2, 5, 1, 3, 77.97, 'online', 'matchaysundalo', 'pending'),
-(3, 5, 1, 7, 181.93, 'online', 'brian\r\n', 'pending'),
-(4, 5, 1, 6, 155.94, 'online', 'rawr', 'pending'),
-(5, 5, 1, 1, 25.99, 'online', 'yumyum', 'pending'),
-(6, 5, 1, 4, 103.96, 'credit_card', 'rawr', 'pending'),
-(7, 5, 1, 1, 25.99, 'credit_card', 'bushet', 'pending'),
-(8, 5, 1, 1, 25.99, 'paypal', 'raaa', 'pending');
+(12, 7, 1, 2, 52.04, 'online', 'FOR REAL REAL!!', 'pending'),
+(13, 7, 1, 3, 78.06, 'paypal', 'hi', 'delivered');
 
 -- --------------------------------------------------------
 
@@ -117,15 +98,16 @@ CREATE TABLE `products` (
   `description` text NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  `featured` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`, `category_id`) VALUES
-(1, 'Chocolate Cake', 'A delicious chocolate cake', 25.99, 'chocolate_cake.jpg', NULL);
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`, `category_id`, `featured`) VALUES
+(1, 'Chocolate Cake', 'A delicious chocolate cake', 26.15, 'chocolate_cake.jpg', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -141,6 +123,14 @@ CREATE TABLE `reviews` (
   `review` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `user_id`, `product_id`, `rating`, `review`) VALUES
+(1, 5, 1, 2, 'uglyy'),
+(2, 5, 1, 5, 'soperduer\r\n');
+
 -- --------------------------------------------------------
 
 --
@@ -153,26 +143,30 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `loyalty_points` int(11) DEFAULT 0,
-  `reset_token` varchar(255) DEFAULT NULL
+  `reset_token` varchar(255) DEFAULT NULL,
+  `isAdmin` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `loyalty_points`, `reset_token`) VALUES
-(5, 'brian', 'brian@gmail.com', '$2y$10$lM5v8K94knSl/8uJzsJ5Ue9GJyF8F8VW4OhXpQyrP38O2Rb073dOy', 728, NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `loyalty_points`, `reset_token`, `isAdmin`) VALUES
+(5, 'brian', 'brian@gmail.com', '$2y$10$lM5v8K94knSl/8uJzsJ5Ue9GJyF8F8VW4OhXpQyrP38O2Rb073dOy', 100, NULL, 0),
+(6, 'admin', 'admin@gmail.com', '$2y$10$yf3pCYzsjeIOaUVHYG3g4ey.ujdz0DZGZ4ycFwesMkB6bJHOqx46W', 0, NULL, 1),
+(7, 'test', 'test@gmail.com', '$2y$10$ZbKv0zSpNUlHIwRbBeUoVuLsCC10F32PTokzC0eqrrn5i1/zEiZ6G', 52, NULL, 0),
+(10, 'RAHH', 'rah@gmail.com', '$2y$10$YMhRBdmTJWymPyno5c68FOteV8CYM7/BguZ8TzNNTRl32B9RFG2oy', 0, NULL, 0),
+(11, 'rawr123', 'rawr123@gmail.com', '$2y$10$LKfY3T9Vls7W8wmhju07yeY9igSbtv8wVlPvQAfTW6E6TxR/HzM3u', 0, NULL, 0),
+(12, 'bushet1', 'bushet1@gmail.com', '$2y$10$J6d.Y4CS3WY8gDKF8gdyLeZerRTGcgpxJ7jLD3KSKt1MEg7nVhibm', 0, NULL, 0),
+(13, 'bushet2', 'bushet2@gmail.com', '$2y$10$xTkkg4kys.kJlAe18a.DeeEYbq1Ku1ZqbipLLWktOWv9mCHh53lcS', 0, NULL, 0),
+(14, 'bushet3', 'bushet3@gmail.com', '$2y$10$.NCwr2j.2RvXR7y4DXDRBONv1RhbgLU7jFYKqdg.aoVCsZNZi43uG', 0, NULL, 0),
+(15, 'bushet4', 'bushet4@gmail.com', '$2y$10$2J/Y3AI7KVzmEh9.Zth/ueZoeveTGaJxRCTEo4feyT9YB1AfJ/z0u', 0, NULL, 0),
+(16, 'bushet5', 'bushet5@gmail.com', '$2y$10$InlYDqjjqAebXMLuVohFC.zI/VtTEGx0DTLKWcrIp0PXJAIPD9gJ.', 0, NULL, 0),
+(17, 'bushet6', 'bushet6@gmail.com', '$2y$10$NlhTHgTGk79F05bB9y/rce9uN5i5wKiRKjlBoeMM4yUwayY56G.E6', 0, NULL, 0);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `admins`
---
-ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `categories`
@@ -221,12 +215,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -236,13 +224,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `contact_messages`
 --
 ALTER TABLE `contact_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -254,13 +242,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
